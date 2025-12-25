@@ -4,7 +4,7 @@ services:
     image: grafana/grafana:latest
     hostname: rpi-grafana
     restart: unless-stopped
-    user: "472"
+    user: "1000:1000"
     networks:
       - internal
     ports:
@@ -21,6 +21,7 @@ services:
   cadvisor:
     container_name: monitoring-cadvisor
     image: gcr.io/cadvisor/cadvisor:v0.47.1
+    user: "1000:1000"
     hostname: rpi-cadvisor
     restart: unless-stopped
     privileged: true
@@ -41,6 +42,7 @@ services:
   node-exporter:
     container_name: monitoring-node-exporter
     image: prom/node-exporter:latest
+    user: "1000:1000"
     hostname: rpi-exporter
     restart: unless-stopped
     networks:
@@ -64,7 +66,7 @@ services:
     image: prom/prometheus:latest
     hostname: rpi-prometheus
     restart: unless-stopped
-    user: "nobody"
+    user: "1000:1000"
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
