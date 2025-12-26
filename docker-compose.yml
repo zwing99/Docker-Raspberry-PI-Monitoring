@@ -20,21 +20,29 @@ services:
 
   cadvisor:
     container_name: monitoring-cadvisor
-    image: gcr.io/cadvisor/cadvisor:v0.47.1
-    user: "1000:1000"
+    image: gcr.io/cadvisor/cadvisor:v0.55.1
     hostname: rpi-cadvisor
     restart: unless-stopped
     privileged: true
+    pid: host
+    userns_mode: "host"
     networks:
       - internal
     expose:
       - 8080
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    command:
+      - --docker_only
+      - --docker=unix:///var/run/docker.sock
     devices:
       - /dev/kmsg
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
+      - /var/run/docker.sock:/var/run/docker.sock:rw
       - /sys:/sys:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
       - /etc/machine-id:/etc/machine-id:ro

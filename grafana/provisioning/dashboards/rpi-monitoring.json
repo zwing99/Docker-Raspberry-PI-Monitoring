@@ -727,7 +727,7 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "count(container_last_seen{container!=\"\"})",
+          "expr": "count(container_last_seen{image=~ \"(.)+\"})",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2226,10 +2226,10 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"\"}[$__rate_interval])) by (container) *100",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{name!=\"\"}[$__rate_interval])) by (name) *100",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
         }
@@ -2323,12 +2323,12 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "container_memory_usage_bytes{container!=\"\"}",
+          "expr": "container_memory_usage_bytes{name!=\"\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "A",
           "target": ""
@@ -2339,12 +2339,12 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "container_spec_memory_limit_bytes{container!=\"\"}",
+          "expr": "container_spec_memory_limit_bytes{name!=\"\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "Limit {{container}}",
+          "legendFormat": "Limit {{name}}",
           "range": true,
           "refId": "B"
         }
@@ -2437,12 +2437,12 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "sum(container_memory_rss{container!=\"\"}) by (container)",
+          "expr": "sum(container_memory_rss{name!=\"\"}) by (name)",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "A",
           "step": 240
@@ -2453,11 +2453,11 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "container_memory_usage_bytes{container!=\"\"}",
+          "expr": "container_memory_usage_bytes{name=~\".+\"}",
           "format": "time_series",
           "hide": true,
           "intervalFactor": 2,
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "B",
           "step": 240
@@ -2553,10 +2553,10 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_network_receive_bytes_total{container!=\"\"}[$__rate_interval])) by (container)",
+          "expr": "sum(rate(container_network_receive_bytes_total{name=~\".+\"}[$__rate_interval])) by (name)",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
         }
@@ -2651,9 +2651,9 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "sum(rate(container_network_transmit_bytes_total{container!=\"\"}[$__rate_interval])) by (container)",
+          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\".+\"}[$__rate_interval])) by (name)",
           "interval": "",
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
         }
@@ -2746,10 +2746,10 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without (dc,from,id,csv) (irate(container_fs_writes_bytes_total{container!=\"\",image!=\"\",device!~\"/dev/dm.*\"}[$__rate_interval]))",
+          "expr": "sum without (dc,from,id,csv) (irate(container_fs_writes_bytes_total{image!=\"\",device!~\"/dev/dm.*\"}[$__rate_interval]))",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
         }
@@ -2842,10 +2842,10 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum without (dc,from,id,csv) (irate(container_fs_reads_bytes_total{container!=\"\",image!=\"\",device!~\"/dev/dm.*\"}[$__rate_interval]))",
+          "expr": "sum without (dc,from,id,csv) (irate(container_fs_reads_bytes_total{image!=\"\",device!~\"/dev/dm.*\"}[$__rate_interval]))",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
         }
@@ -2948,11 +2948,11 @@
             "uid": "t4f0shgRk"
           },
           "editorMode": "code",
-          "expr": "(time() - container_start_time_seconds{container!=\"\"})/86400",
+          "expr": "(time() - container_start_time_seconds{name=~\".+\"})/86400",
           "format": "table",
           "instant": true,
           "interval": "",
-          "legendFormat": "{{container}}",
+          "legendFormat": "{{name}}",
           "refId": "A"
         }
       ],
@@ -2967,7 +2967,7 @@
                 "container_label_com_docker_compose_project_working_dir",
                 "image",
                 "instance",
-                "container",
+                "name",
                 "Value",
                 "container_label_com_docker_compose_service"
               ]
@@ -2986,7 +2986,7 @@
               "container_label_com_docker_compose_service": "Service",
               "image": "Registry Image",
               "instance": "Instance",
-              "container": "Name"
+              "name": "Name"
             }
           }
         }
